@@ -19,10 +19,12 @@ dnl OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 dnl THE SOFTWARE.
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(grandr, 0.1)
-AM_CONFIG_HEADER(config.h)
+AC_PREREQ([2.57])
+AC_INIT(grandr,[0.1], [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],grandr)
+AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
+
+AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
 AC_PROG_CC
@@ -33,6 +35,9 @@ pkg_modules="gtk+-2.0 >= 2.0.0 gconf-2.0 xrandr >= 1.2"
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
+
+XORG_MANPAGE_SECTIONS
+XORG_RELEASE_VERSION
 
 AC_OUTPUT([
 Makefile

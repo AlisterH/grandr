@@ -1,0 +1,3 @@
+The hotkey stuff is a bit broken. It overrides any existing configuration
+for the first user-programmable metacity hotkey. It also programs
+<Shift>F19 for the hotkey instead of the advertised <Shift>F7.

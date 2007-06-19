@@ -14,5 +14,8 @@ config.sub
 configure
 depcomp
 install-sh
+missing
+mkinstalldirs
 stamp-h1
+grandr-*.tar.gz
 src/grandr

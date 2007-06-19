@@ -1381,7 +1381,7 @@ set_hotkeys_view (GtkListStore *hotkey_store)
 											NULL);
 	command = gconf_client_get_string(client, GCONF_KEY2,
 											NULL);
-	if (strcmp(key, HOTKEY) == 0 && strcmp(command, APP_NAME) == 0) {
+	if (key && strcmp(key, HOTKEY) == 0 && command && strcmp(command, APP_NAME) == 0) {
 		gtk_toggle_button_set_active (hotkey_cbtn, TRUE);
 	} else {
 		gtk_toggle_button_set_active (hotkey_cbtn, FALSE);

@@ -1,0 +1,39 @@
+compile enviroment
+--------------------
+randproto: master branch
+libXrandr: master branch
+xserver: server-1.2-branch
+xf86-video-intel: modesetting branch
+
+gtk+-2.0 >= 2.0.0 
+gconf-2.0
+
+
+test enviroment
+------------------
+the same branches as above
+hardware: i945
+
+
+compile
+--------
+./autogen.sh
+or
+./autogen.sh --prefix=<THE PATH YOU SPECIFIED>
+
+make
+make install
+
+
+hot key
+------------
+GNOME MUST running
+if you don't install grandr in the default PATH, please make a link to grandr in the PATH
+for example, ln -s <PATH TO YOUR grandr> /usr/bin/grandr
+
+
+There are some sceenshots in the sceenshots dir.
+Any feedback is appreciated :)
+
+ming.m.lin@intel.com
+

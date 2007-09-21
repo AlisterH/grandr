@@ -179,7 +179,7 @@ create_main_win (void)
   gtk_widget_show (vbox2);
   gtk_container_add (GTK_CONTAINER (viewport1), vbox2);
 
-  label9 = gtk_label_new (_("Outpus     "));
+  label9 = gtk_label_new (_("Outputs     "));
   gtk_widget_show (label9);
   gtk_box_pack_start (GTK_BOX (vbox2), label9, FALSE, FALSE, 0);
 

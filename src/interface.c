@@ -540,6 +540,9 @@ create_main_win (void)
   g_signal_connect ((gpointer) apply_btn, "clicked",
                     G_CALLBACK (on_apply_btn_clicked),
                     NULL);
+  g_signal_connect ((gpointer) main_win, "destroy",
+                    G_CALLBACK (gtk_main_quit),
+                    NULL);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (main_win, main_win, "main_win");

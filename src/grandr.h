@@ -28,7 +28,7 @@
 
 #include "constant.h"
 
-struct SceenInfo;
+struct ScreenInfo;
 
 struct CrtcInfo {
 	RRCrtc id;
@@ -42,7 +42,7 @@ struct CrtcInfo {
 	
 	int changed;
 	
-	struct SceenInfo *screen_info;
+	struct ScreenInfo *screen_info;
 };
 
 struct OutputInfo {

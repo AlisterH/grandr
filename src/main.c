@@ -29,6 +29,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
 #include <stdlib.h>
 
 #include "interface.h"
@@ -86,7 +87,7 @@ main (int argc, char *argv[])
   root_window = create_main_win ();
   gtk_widget_show (root_window);
 	
-	display = XOpenDisplay(NULL);
+	display = GDK_DISPLAY();
 	
 	check_server_randr_version (display);
 	

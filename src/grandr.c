@@ -305,12 +305,10 @@ screen_apply (struct ScreenInfo *screen_info)
 	window = screen_info->window;
 	screen = DefaultScreen (dpy);
 	
-	cur_dpy = XOpenDisplay (NULL);
-
-	if (width == DisplayWidth (cur_dpy, screen) &&
-			height == DisplayHeight (cur_dpy, screen) &&
-			mmWidth == DisplayWidthMM (cur_dpy, screen) &&
-			mmHeight == DisplayHeightMM (cur_dpy, screen) ) {
+	if (width == DisplayWidth (dpy, screen) &&
+			height == DisplayHeight (dpy, screen) &&
+			mmWidth == DisplayWidthMM (dpy, screen) &&
+			mmHeight == DisplayHeightMM (dpy, screen) ) {
 		return;
 	} else {
 		XRRSetScreenSize (dpy, window, width, height, mmWidth, mmHeight);
@@ -402,7 +400,8 @@ apply (struct ScreenInfo *screen_info)
 	struct CrtcInfo *crtc_info;
 	GtkWidget *dialog;
 
-	//XGrabServer (screen_info->dpy);
+	XGrabServer (screen_info->dpy);
+	XSync(screen_info->dpy, False);
 	set_positions (screen_info);
 	
 	if (!set_screen_size (screen_info)) {
@@ -454,9 +453,11 @@ apply (struct ScreenInfo *screen_info)
 		//}
 	}
 	
-	return 1;
 	
-	//XUngrabServer (screen_info->dpy);
+	XSync(screen_info->dpy, False);
+	XUngrabServer (screen_info->dpy);
+	
+	return 1;
 }
 
 struct ScreenInfo*

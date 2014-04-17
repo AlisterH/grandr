@@ -83,7 +83,7 @@ extern GtkListStore *output_store;
 extern GtkListStore *center_store, *left_store, *right_store, *above_store, *below_store;
 extern GtkListStore *mode_store;
 extern const guint8 big_pixbuf[], small_pixbuf[];
-
+void free_screen_info (struct ScreenInfo *screen_info);
 GdkPixbuf* randr_create_pixbuf (const guint8 *data);
 
 struct ScreenInfo* read_screen_info (Display *);

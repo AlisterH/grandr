@@ -159,8 +159,10 @@ on_modes_combo_changed                 (GtkComboBox     *combobox,
 	GtkTreeIter iter;
 	int mode_id;
 	
+	if (!gtk_combo_box_get_active_iter (combobox, &iter))
+		return;
 	model = gtk_combo_box_get_model (combobox);
-	gtk_combo_box_get_active_iter (combobox, &iter);
+
   	gtk_tree_model_get (model, &iter,
 		      COL_MODE_ID, &mode_id,
 		      -1);
@@ -231,7 +233,7 @@ on_iview_drag_data_get                 (GtkWidget       *widget,
 	GtkTreeIter iter;
 	GList *path_list;
 	GtkTreePath *tree_path;
-	int output_id;
+	static int output_id;
 	int i;
 	GtkIconView *iconview = (GtkIconView *) widget;
 	
@@ -261,7 +263,7 @@ on_iview_drag_data_get                 (GtkWidget       *widget,
 				&output_id, sizeof (int)
 			);
 
-	gtk_list_store_remove (model, &iter);
+	gtk_list_store_remove (GTK_LIST_STORE(model), &iter);
 }
 
 
@@ -289,9 +291,9 @@ on_iview_drag_data_received            (GtkWidget       *widget,
 	output_id = (int) *data->data;
 	output_name = get_output_name (screen_info, output_id);
 	
-	store = gtk_icon_view_get_model (widget);
-	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter, 
+	store = gtk_icon_view_get_model (GTK_ICON_VIEW(widget));
+	gtk_list_store_append (GTK_LIST_STORE(store), &iter);
+	gtk_list_store_set (GTK_LIST_STORE(store), &iter, 
 									COL_OUTPUT_ID, output_id,
 									COL_OUTPUT_NAME, output_name,
 									COL_OUTPUT_PIXBUF, output_pixbuf,
@@ -311,7 +313,7 @@ on_auto_cbtn_toggled                   (GtkToggleButton *togglebutton,
 	
 	if (gtk_toggle_button_get_active (togglebutton)) {
 		gtk_widget_set_sensitive (mode_combo, FALSE);
-		gtk_toggle_button_set_active (off_cbtn, FALSE);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(off_cbtn), FALSE);
 		
 		screen_info->cur_output->auto_set = 1;
 		screen_info->cur_output->off_set = 0;
@@ -320,7 +322,7 @@ on_auto_cbtn_toggled                   (GtkToggleButton *togglebutton,
 		//screen_info->cur_crtc->changed = 1;
 		
 	} else {
-		if (!gtk_toggle_button_get_active (off_cbtn)) {
+		if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(off_cbtn))) {
 			gtk_widget_set_sensitive (mode_combo, TRUE);
 		}
 	}
@@ -339,7 +341,7 @@ on_off_cbtn_toggled                    (GtkToggleButton *togglebutton,
 	
 	if (gtk_toggle_button_get_active (togglebutton)) {
 		gtk_widget_set_sensitive (mode_combo, FALSE);
-		gtk_toggle_button_set_active (auto_cbtn, FALSE);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(auto_cbtn), FALSE);
 		
 		screen_info->cur_output->auto_set = 0;
 		screen_info->cur_output->off_set = 1;
@@ -348,7 +350,7 @@ on_off_cbtn_toggled                    (GtkToggleButton *togglebutton,
 		//screen_info->cur_crtc->changed = 1;
 		
 	} else {
-		if (!gtk_toggle_button_get_active (auto_cbtn)) {
+		if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(auto_cbtn))) {
 			gtk_widget_set_sensitive (mode_combo, TRUE);
 		}
 	}
@@ -398,8 +400,8 @@ on_about_btn_clicked                   (GtkButton       *button,
 "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n"
 "THE SOFTWARE.";
 	
-	gtk_show_about_dialog (root_window, 
-								"authors", authors, 
+	gtk_show_about_dialog (GTK_WINDOW(root_window),
+								"authors", authors,
 								"comments", comments,
 								"name", "RandR GUI",
 								"license", license,

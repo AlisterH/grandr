@@ -23,6 +23,7 @@
 #include "support.h"
 #include "callbacks.h"
 #include <stdlib.h>
+#include <string.h>
 #include <gconf/gconf-client.h>
 
 static Status crtc_disable (struct CrtcInfo *crtc);
@@ -32,7 +33,7 @@ static Status crtc_disable (struct CrtcInfo *crtc);
 char *
 get_output_name (struct ScreenInfo *screen_info, RROutput id)
 {
-	char *output_name;
+	char *output_name = NULL;
 	int i;
 	
 	for (i = 0; i < screen_info->n_output; i++) {
@@ -51,7 +52,7 @@ get_output_name (struct ScreenInfo *screen_info, RROutput id)
 XRRModeInfo *
 find_mode_by_xid (struct ScreenInfo *screen_info, RRMode mode_id)
 {
-	XRRModeInfo *mode_info;
+	XRRModeInfo *mode_info = NULL;
 	XRRScreenResources *res;
 	int i;
 	
@@ -213,8 +214,8 @@ set_screen_size (struct ScreenInfo *screen_info)
 	int screen;
 	struct CrtcInfo *crtc;
 	XRRModeInfo *mode_info;
-	int cur_x, cur_y;
-	int w, h;
+	int cur_x = 0, cur_y = 0;
+	int w = 0, h = 0;
 	int mmW, mmH;
 	int max_width = 0, max_height = 0;
 	int i;
@@ -405,7 +406,7 @@ apply (struct ScreenInfo *screen_info)
 	set_positions (screen_info);
 	
 	if (!set_screen_size (screen_info)) {
-		dialog = gtk_message_dialog_new (root_window,
+		dialog = gtk_message_dialog_new (GTK_WINDOW(root_window),
 			  	  GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
 				  GTK_MESSAGE_WARNING,
 				  GTK_BUTTONS_CANCEL,
@@ -650,16 +651,14 @@ fill_output_store (GtkListStore *store, struct ScreenInfo *screen_info, int big_
 }
 
 
-static char *
+static gchar *
 get_mode_name (struct ScreenInfo *screen_info, RRMode mode_id)
 {
 	XRRScreenResources *sr;
-	char *mode_name;
-	int mode_name_len = 40;
+	gchar *mode_name = NULL;
 	int i;
 	
 	sr = screen_info->res;
-	mode_name = malloc (mode_name_len);
 	
 	for (i = 0; i < sr->nmode; i++) {
 		if (sr->modes[i].id == mode_id) {
@@ -668,16 +667,16 @@ get_mode_name (struct ScreenInfo *screen_info, RRMode mode_id)
 	}
 	
 	if (i == sr->nmode) {
-		snprintf (mode_name, mode_name_len, "%s", "Unknown mode"); 
+		mode_name = g_strdup ("Unknown mode"); 
 	} else {
 		double rate;
 		if (sr->modes[i].hTotal && sr->modes[i].vTotal) {
 			rate = ((double) sr->modes[i].dotClock / 
 					 ((double) sr->modes[i].hTotal * (double) sr->modes[i].vTotal));
-	   } else {
+		} else {
 			rate = 0;
 		}
-		snprintf (mode_name, mode_name_len, "%s%6.1fHz", sr->modes[i].name, rate);
+		mode_name = g_strdup_printf ("%s%6.1fHz", sr->modes[i].name, rate);
 	}
 	
 	return mode_name;
@@ -730,7 +729,7 @@ fill_mode_store (GtkListStore *store, struct OutputInfo *output)
 	
 	GtkTreeIter iter;
 	XRROutputInfo *output_info;
-	char *mode_name;
+	gchar *mode_name;
 	
 	int i;
 	int mode_index = -1;
@@ -750,7 +749,7 @@ fill_mode_store (GtkListStore *store, struct OutputInfo *output)
 									COL_MODE_NAME, mode_name,
 									-1);
 		mode_index++;
-		free (mode_name);
+		g_free (mode_name);
 		
 		if (output->cur_crtc && output->cur_crtc->cur_mode_id == output_info->modes[i]) {
 			active_num = mode_index;
@@ -1190,7 +1189,7 @@ set_positions (struct ScreenInfo *screen_info)
 	GtkWidget *pos_iview[N_POSITIONS];
 	struct CrtcInfo *crtc_info;
 	RRCrtc *crtc_list;
-	int list_len;
+	int list_len = 0;
 	int x, y;
 	int center_x, right_x;
 	int center_y, below_y;

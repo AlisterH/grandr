@@ -80,7 +80,7 @@ on_rotation90_rbtn_pressed             (GtkButton       *button,
 {
 	GtkImage *rotation_img = GTK_IMAGE (lookup_widget (root_window, "rotation_img"));
 	
-	gtk_image_set_from_icon_name (rotation_img, "gtk-go-back", GTK_ICON_SIZE_BUTTON);
+	gtk_image_set_from_icon_name (rotation_img, "gtk-go-back-ltr", GTK_ICON_SIZE_BUTTON);
 	
 	screen_info->cur_crtc->cur_rotation = RR_Rotate_90;
 }
@@ -104,7 +104,7 @@ on_rotation270_rbtn_pressed            (GtkButton       *button,
 {
 	GtkImage *rotation_img = GTK_IMAGE (lookup_widget (root_window, "rotation_img"));
 	
-	gtk_image_set_from_icon_name (rotation_img, "gtk-go-forward", GTK_ICON_SIZE_BUTTON);
+	gtk_image_set_from_icon_name (rotation_img, "gtk-go-forward-ltr", GTK_ICON_SIZE_BUTTON);
 	
 	screen_info->cur_crtc->cur_rotation = RR_Rotate_270;
 }
